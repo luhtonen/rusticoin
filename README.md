@@ -3,7 +3,7 @@
 Cryptocurrency implemented with Rust to learn Rust and to understand better what is blockchain and cryptocurrency.
 
 ## License
-tbd
+[GNU GPLv3](LICENSE)
 
 ## Contributors
 
