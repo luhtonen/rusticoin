@@ -2,6 +2,7 @@ use data_encoding::HEXUPPER;
 use ring::digest;
 use std::time::SystemTime;
 
+#[derive(Debug)]
 pub struct Block {
     pub index: u64,
     pub data: String,
@@ -21,6 +22,22 @@ impl Block {
             previous_hash,
             timestamp,
         }
+    }
+
+    pub fn first(data: Option<String>) -> Block {
+        Block::new(
+            0,
+            data.unwrap_or(String::from("Genesis Block")),
+            String::from("0"),
+        )
+    }
+
+    pub fn next(previous_block: &Block) -> Block {
+        Block::new(
+            previous_block.index + 1,
+            format!("Transaction data number ({})", previous_block.index + 1),
+            previous_block.current_hash.clone(),
+        )
     }
 }
 
