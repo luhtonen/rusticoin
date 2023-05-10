@@ -1,10 +1,6 @@
-use data_encoding::HEXUPPER;
-use ring::digest::{self, Digest};
+use rusticoin::Block;
 
 fn main() {
-    println!("hash: {}", HEXUPPER.encode((hash("Hello, world!").as_ref())));
-}
-
-fn hash(data: &str) -> Digest {
-    digest::digest(&digest::SHA256, &data.as_bytes())
+    let block = Block::new(0, String::from("data"), String::from("block"));
+    println!("hash: {}", block.current_hash);
 }
