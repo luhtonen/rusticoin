@@ -4,7 +4,7 @@ fn main() {
     let mut blockchain = vec![Block::first(None)];
     for i in 1..5 {
         let previous = &blockchain[i - 1];
-        let new_block = Block::next(previous);
+        let new_block = Block::next(previous, vec![]);
         blockchain.push(new_block);
     }
     println!("{:#?}", blockchain);

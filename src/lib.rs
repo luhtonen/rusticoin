@@ -1,3 +1,5 @@
+mod blockchain;
+
 use data_encoding::HEXUPPER;
 use ring::digest;
 use std::time::SystemTime;
@@ -10,10 +12,11 @@ pub struct Block {
     pub current_hash: String,
     pub previous_hash: String,
     pub timestamp: SystemTime,
+    pub transactions: Vec<Transaction>,
 }
 
 impl Block {
-    pub fn new(index: u64, data: String, previous_hash: String) -> Self {
+    pub fn new(index: u64, data: String, previous_hash: String, transactions: Vec<Transaction>) -> Self {
         let timestamp = SystemTime::now();
         let (nonce, current_hash) = Self::proof_of_work(
             index,
@@ -29,6 +32,7 @@ impl Block {
             current_hash,
             previous_hash,
             timestamp,
+            transactions,
         }
     }
 
@@ -37,14 +41,16 @@ impl Block {
             0,
             data.unwrap_or(String::from("Genesis Block")),
             String::from("0"),
+            vec![],
         )
     }
 
-    pub fn next(previous_block: &Block) -> Block {
+    pub fn next(previous_block: &Block, transactions: Vec<Transaction>) -> Block {
         Block::new(
             previous_block.index + 1,
             format!("Transaction data number ({})", previous_block.index + 1),
             previous_block.current_hash.clone(),
+            transactions,
         )
     }
     fn proof_of_work(
@@ -78,5 +84,18 @@ impl Block {
                 nonce += 1;
             }
         }
+    }
+}
+
+#[derive(Debug)]
+pub struct Transaction {
+    pub from: String,
+    pub to: String,
+    pub amount: i32,
+}
+
+impl Transaction {
+    pub fn new(from: String, to: String, amount: i32) -> Self {
+        Transaction { from, to, amount }
     }
 }
